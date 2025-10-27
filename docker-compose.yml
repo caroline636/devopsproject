@@ -1,0 +1,20 @@
+version: '3.8'
+services:
+  web:
+    build: .
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./data:/app/data     # persist results on host
+    # environment:
+    #   - MONGO_URI=mongodb://mongo:27017/resume_db   # uncomment if using mongo
+    depends_on:
+      - mongo
+  mongo:
+    image: mongo:6.0
+    restart: unless-stopped
+    # uncomment below if you want host mounting of db files (optional)
+    # volumes:
+    #   - ./mongo-data:/data/db
+    # ports:
+    #   - "27017:27017"

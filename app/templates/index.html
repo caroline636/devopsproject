@@ -1,0 +1,25 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8"/>
+  <title>Resume Screening</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="p-4">
+  <div class="container">
+    <h1>AI Resume Screening</h1>
+    <form action="/upload" method="post" enctype="multipart/form-data" class="mt-4">
+      <div class="mb-3">
+        <label class="form-label">Job Description</label>
+        <textarea class="form-control" name="job_description" rows="6"
+                  placeholder="Paste the job description here (skills, responsibilities)..."></textarea>
+      </div>
+      <div class="mb-3">
+        <label class="form-label">Resume PDF / TXT</label>
+        <input class="form-control" type="file" name="resume" accept=".pdf,.txt,.docx">
+      </div>
+      <button class="btn btn-primary">Upload & Screen</button>
+    </form>
+  </div>
+</body>
+</html>

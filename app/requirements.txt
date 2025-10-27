@@ -1,0 +1,7 @@
+flask
+pdfplumber
+PyPDF2
+scikit-learn
+numpy
+gunicorn
+pymongo
