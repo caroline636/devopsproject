@@ -1,0 +1,43 @@
+---
+- name: Deploy Resume Screening App
+  hosts: all
+  become: yes
+  vars:
+    app_dir: /opt/resume-screening
+    repo_url: https://github.com/your-username/resume-screening.git  # Replace with actual repo URL
+
+  tasks:
+    - name: Update apt cache
+      apt:
+        update_cache: yes
+
+    - name: Install required packages
+      apt:
+        name:
+          - git
+          - docker.io
+          - docker-compose
+        state: present
+
+    - name: Start and enable Docker service
+      service:
+        name: docker
+        state: started
+        enabled: yes
+
+    - name: Create app directory
+      file:
+        path: "{{ app_dir }}"
+        state: directory
+        mode: '0755'
+
+    - name: Clone repository
+      git:
+        repo: "{{ repo_url }}"
+        dest: "{{ app_dir }}"
+        version: main
+
+    - name: Build and run Docker containers
+      command: docker-compose up -d
+      args:
+        chdir: "{{ app_dir }}"

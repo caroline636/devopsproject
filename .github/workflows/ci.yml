@@ -7,7 +7,7 @@ on:
     branches: [ main, master ]
 
 jobs:
-  test:
+  lint-and-test:
     runs-on: ubuntu-latest
 
     steps:
@@ -23,12 +23,21 @@ jobs:
       run: |
         python -m pip install --upgrade pip
         pip install -r app/requirements.txt
+        pip install flake8 black
+
+    - name: Lint with flake8
+      run: |
+        flake8 app/ --count --select=E9,F63,F7,F82 --show-source --statistics
+        flake8 app/ --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
+
+    - name: Format with black
+      run: black --check --diff app/
 
     - name: Run tests
       run: python test_script.py
 
   build-and-deploy:
-    needs: test
+    needs: lint-and-test
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
 
@@ -48,3 +57,8 @@ jobs:
         context: .
         push: true
         tags: ${{ secrets.DOCKER_USERNAME }}/resume-screening:latest
+
+    - name: Deploy to production
+      run: |
+        echo "Deployment triggered. Add deployment steps here (e.g., trigger Ansible playbook or update cloud infrastructure)."
+        # Example: curl -X POST -H "Authorization: token ${{ secrets.DEPLOY_TOKEN }}" https://api.example.com/deploy
