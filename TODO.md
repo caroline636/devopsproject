@@ -1,38 +1,15 @@
-# TODO: DevOps Pipeline for Resume Screening Project
+# TODO: Run Project and Simulate CI/CD Pipeline
 
-## Phase 1: Source Code and Version Control
-- [ ] Check if Git is initialized in the project directory.
-- [ ] If not, run `git init`.
-- [ ] Create .gitignore to exclude __pycache__, .env, data/, *.pyc, etc.
-- [ ] Add all project files to Git.
-- [ ] Create initial commit.
+## Step 1: Run the Project
+- [x] Run the application: `python app/app.py`
+- [x] Verify app is running at http://localhost:5000
 
-## Phase 2: Containerization
-- [ ] Enhance docker-compose.yml to fully integrate MongoDB (uncomment volumes, ports, and environment).
-- [ ] Update Dockerfile for better caching (e.g., copy requirements first).
-- [ ] Modify app/app.py to use MongoDB for persistence instead of JSON files.
-- [ ] Test containerized app locally with `docker compose up`.
+## Step 2: Simulate CI/CD Pipeline Locally
+- [x] Install dependencies: `pip install -r app/requirements.txt flake8 black`
+- [x] Lint with flake8: `flake8 app/ --count --select=E9,F63,F7,F82 --show-source --statistics` and `flake8 app/ --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics`
+- [x] Format check with black: `black --check --diff app/`
+- [x] Run tests: `python test_script.py`
 
-## Phase 3: Infrastructure Provisioning (IaC)
-- [ ] Install Terraform locally.
-- [ ] Create terraform/ directory with main.tf for provisioning a cloud VM (e.g., DigitalOcean Droplet with Docker).
-- [ ] Add variables.tf and outputs.tf for configuration.
-- [ ] Test Terraform plan locally.
-
-## Phase 4: Configuration Management
-- [ ] Install Ansible locally.
-- [ ] Create ansible/ directory with playbook.yml to configure VM (install Docker, clone repo, run containers).
-- [ ] Create ansible/inventory.ini for VM targeting.
-- [ ] Test Ansible playbook locally (dry-run).
-
-## Phase 5: CI/CD Pipeline Setup
-- [ ] Create .github/workflows/ci.yml if not present, or enhance existing.
-- [ ] Configure workflow for linting, testing, building Docker image, pushing to registry, and triggering deployment.
-- [ ] Add handling for secrets (e.g., cloud API keys).
-
-## Phase 6: Deployment and Validation
-- [ ] Create deploy.sh script to run Terraform apply and Ansible playbook.
-- [ ] Create validation_script.py for health checks and API testing.
-- [ ] Update README.md with full deployment instructions.
-- [ ] Test full pipeline locally (simulate deployment).
-- [ ] Validate app functionality post-deployment.
+## Step 3: CI/CD with Git Alone
+- [x] Remove Docker-related deployment from CI/CD pipeline
+- [x] Update CI/CD to deploy directly via Git (e.g., using GitHub Actions for deployment without Docker)
