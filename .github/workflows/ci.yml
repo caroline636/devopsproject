@@ -7,7 +7,7 @@ on:
     branches: [ main, master ]
 
 jobs:
-  test:
+  lint-and-test:
     runs-on: ubuntu-latest
 
     steps:
@@ -36,8 +36,8 @@ jobs:
     - name: Run tests
       run: python test_script.py
 
-  deploy:
-    needs: test
+  build-and-deploy:
+    needs: lint-and-test
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
 
@@ -47,10 +47,18 @@ jobs:
 
     - name: Deploy to server
       run: |
-        # Add deployment commands here, e.g., rsync, scp, or direct git pull on server
         echo "Deploying via Git..."
         # Example: ssh user@server 'cd /path/to/app && git pull origin main && pip install -r requirements.txt && systemctl restart app'
         # Replace with actual deployment script or commands
 
+    - name: Build and push Docker image
+      uses: docker/build-push-action@v5
+      with:
+        context: .
+        push: true
+        tags: ${{ secrets.DOCKER_USERNAME }}/resume-screening:latest
 
-
+    - name: Deploy to production
+      run: |
+        echo "Deployment triggered. Add deployment steps here (e.g., trigger Ansible playbook or update cloud infrastructure)."
+        # Example: curl -X POST -H "Authorization: token ${{ secrets.DEPLOY_TOKEN }}" https://api.example.com/deploy

@@ -43,19 +43,47 @@ A Flask-based AI resume screening application that uses TF-IDF and cosine simila
 
 Results are saved to `./data` directory.
 
-## CI/CD
+## DevOps Pipeline
 
-This project includes a GitHub Actions workflow for continuous integration and deployment:
+This project implements a full DevOps pipeline including containerization, infrastructure as code, configuration management, and CI/CD.
 
-- **Test**: Runs on every push and PR to main/master branches
-- **Build & Deploy**: Builds and pushes Docker image to Docker Hub on pushes to main/master
+### Components
+- **Containerization**: Docker and Docker Compose with MongoDB integration
+- **Infrastructure as Code**: Terraform for provisioning cloud infrastructure (DigitalOcean Droplet)
+- **Configuration Management**: Ansible for server configuration and app deployment
+- **CI/CD**: GitHub Actions for automated testing, linting, building, and deployment
 
-### Setting up CI/CD
-1. Push this code to a GitHub repository
-2. Add the following secrets to your GitHub repository:
-   - `DOCKER_USERNAME`: Your Docker Hub username
-   - `DOCKER_PASSWORD`: Your Docker Hub password or access token
-3. The workflow will automatically trigger on pushes
+### Prerequisites
+- Python 3.10+
+- Docker and Docker Compose
+- Terraform
+- Ansible
+- GitHub repository with secrets configured
+
+### Local Development
+1. Install dependencies: `pip install -r app/requirements.txt`
+2. Run locally: `python -m flask --app app/app.py run --host=0.0.0.0 --port=5000`
+3. Test: `python test_script.py`
+
+### Deployment
+1. **Provision Infrastructure**: Run `terraform apply` in the `terraform/` directory
+2. **Configure Server**: Update `ansible/inventory.ini` with the provisioned VM IP, then run `ansible-playbook -i inventory.ini playbook.yml`
+3. **Or use the deploy script**: `./deploy.sh` (automates Terraform and Ansible steps)
+
+### CI/CD Setup
+1. Push code to GitHub repository
+2. Add these secrets to your GitHub repo:
+   - `DOCKER_USERNAME`: Docker Hub username
+   - `DOCKER_PASSWORD`: Docker Hub password/access token
+   - `DO_TOKEN`: DigitalOcean API token (for automated deployment)
+   - `DEPLOY_TOKEN`: Token for triggering deployment (optional)
+3. The pipeline runs on pushes to main/master:
+   - Linting and testing
+   - Docker image build and push
+   - Automated deployment trigger
+
+### Validation
+Run the validation script: `python validation_script.py http://<app-url>:5000`
 
 ## API Usage
 

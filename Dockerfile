@@ -9,9 +9,11 @@ RUN apt-get update && apt-get install -y \
     poppler-utils \
     && rm -rf /var/lib/apt/lists/*
 
+# Copy requirements first for better caching
 COPY app/requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
+# Copy app code
 COPY app /app
 
 ENV DATA_DIR=/app/data
