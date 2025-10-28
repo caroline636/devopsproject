@@ -45,20 +45,15 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v4
 
-    - name: Deploy to server
+    - name: Deploy to server via Git
       run: |
         echo "Deploying via Git..."
-        # Example: ssh user@server 'cd /path/to/app && git pull origin main && pip install -r requirements.txt && systemctl restart app'
-        # Replace with actual deployment script or commands
-
-    - name: Build and push Docker image
-      uses: docker/build-push-action@v5
-      with:
-        context: .
-        push: true
-        tags: ${{ secrets.DOCKER_USERNAME }}/resume-screening:latest
-
-    - name: Deploy to production
-      run: |
-        echo "Deployment triggered. Add deployment steps here (e.g., trigger Ansible playbook or update cloud infrastructure)."
-        # Example: curl -X POST -H "Authorization: token ${{ secrets.DEPLOY_TOKEN }}" https://api.example.com/deploy
+        # Assuming the server has the repo cloned at /path/to/app
+        # Replace 'user@server' with actual SSH user and server
+        # Ensure SSH key is added to GitHub secrets and configured
+        ssh -o StrictHostKeyChecking=no user@server << 'EOF'
+          cd /path/to/app
+          git pull origin main
+          pip install -r app/requirements.txt
+          systemctl restart app
+        EOF
