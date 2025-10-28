@@ -6,7 +6,7 @@ from pymongo import MongoClient
 
 app = Flask(__name__)
 DATA_DIR = os.getenv("DATA_DIR", "/app/data")  # mount host volume here
-MONGO_URI = os.getenv('MONGO_URI', 'mongodb://localhost:27017/resume_db')
+MONGO_URI = os.getenv("MONGO_URI", "mongodb://localhost:27017/resume_db")
 
 os.makedirs(DATA_DIR, exist_ok=True)
 
@@ -14,6 +14,7 @@ os.makedirs(DATA_DIR, exist_ok=True)
 client = MongoClient(MONGO_URI)
 db = client.resume_db
 results_collection = db.results
+
 
 @app.route("/", methods=["GET"])
 def index():
@@ -41,8 +42,8 @@ def upload():
         "filename": filename,
         "score": score,
         "matches": matches,
-        'job_description': jd,
-        'resume_text': text
+        "job_description": jd,
+        "resume_text": text,
     }
     # Save to MongoDB
     results_collection.insert_one(result)
