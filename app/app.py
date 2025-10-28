@@ -1,6 +1,6 @@
 import os
 import json
-from flask import Flask, request, render_template, redirect, url_for
+from flask import Flask, request, render_template
 from model_utils import extract_text_from_pdf, score_resume_against_jd
 from pymongo import MongoClient
 
